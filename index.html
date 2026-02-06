@@ -1,33 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AquaGlow Booking API Documentation</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+  <meta name="description" content="Complete API documentation for AquaGlow Car Wash Booking System">
+  
+  <!-- Redoc CDN -->
+  <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+  
+  <!-- Loading indicator -->
   <style>
-    body { margin: 0; padding: 0; }
-    #redoc-container { padding: 20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 1400px;
+      overflow: hidden;
+      margin-top: 20px;
+      min-height: 90vh;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%);
+      color: white;
+      padding: 30px 40px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    #redoc-container {
+      padding: 30px;
+      min-height: 600px;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px;
+      text-align: center;
+    }
+    
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3f51b5;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: white;
+      margin-top: 20px;
+    }
+    
+    .footer a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .header p {
+        font-size: 1rem;
+      }
+      
+      #redoc-container {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div id="redoc-container"></div>
+  <div class="container">
+    <div class="header">
+      <h1>🚗 AquaGlow Booking API</h1>
+      <p>Complete documentation for the AquaGlow Car Wash Booking System. Interactive API console with request/response examples.</p>
+    </div>
+    
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+      <div class="loader"></div>
+      <h2>Loading API Documentation...</h2>
+      <p>If this takes more than a few seconds, please check your internet connection.</p>
+    </div>
+    
+    <!-- Redoc Container -->
+    <div id="redoc-container" style="display: none;"></div>
+  </div>
+  
+  <div class="footer">
+    <p>© 2024 AquaGlow Car Wash | <a href="https://github.com/stack-symphony/AQUAGLOW_API-docs" target="_blank">View on GitHub</a></p>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
   <script>
-    Redoc.init('openapi.yaml', {
-      theme: {
-        colors: {
-          primary: { main: '#3f51b5' }
+    // Hide loading, show Redoc when loaded
+    function showRedoc() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('redoc-container').style.display = 'block';
+    }
+    
+    // Initialize Redoc with error handling
+    try {
+      Redoc.init(
+        'openapi.yaml',
+        {
+          theme: {
+            colors: {
+              primary: { main: '#3f51b5' },
+              success: { main: '#4caf50' },
+              warning: { main: '#ff9800' },
+              error: { main: '#f44336' },
+              text: { primary: '#333333' }
+            },
+            typography: {
+              fontSize: '16px',
+              fontFamily: 'Roboto, sans-serif',
+              headings: {
+                fontFamily: 'Montserrat, sans-serif',
+                fontWeight: 600
+              }
+            },
+            sidebar: {
+              backgroundColor: '#f8f9fa',
+              width: '280px'
+            },
+            rightPanel: {
+              backgroundColor: '#2d3748',
+              width: '40%'
+            }
+          },
+          hideDownloadButton: false,
+          expandResponses: "200,201",
+          expandSingleSchemaField: true,
+          requiredPropsFirst: true,
+          sortOperationsAlphabetically: false,
+          sortTagsAlphabetically: true,
+          nativeScrollbars: false,
+          pathInMiddlePanel: true,
+          hideHostname: false,
+          menuToggle: true,
+          jsonSampleExpandLevel: 3,
+          hideLoading: false,
+          showExtensions: true
         },
-        typography: {
-          fontSize: '16px',
-          fontFamily: 'Roboto, sans-serif'
+        document.getElementById('redoc-container'),
+        function() {
+          // Success callback
+          console.log('Redoc loaded successfully!');
+          showRedoc();
         }
-      },
-      hideDownloadButton: false,
-      expandResponses: "200,201"
-    }, document.getElementById('redoc-container'));
+      );
+    } catch (error) {
+      console.error('Error loading Redoc:', error);
+      document.getElementById('loading').innerHTML = `
+        <div style="color: #f44336; text-align: center;">
+          <h2>⚠️ Error Loading Documentation</h2>
+          <p>${error.message}</p>
+          <p>Please ensure <code>openapi.yaml</code> exists in the root directory.</p>
+          <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3f51b5; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Retry
+          </button>
+        </div>
+      `;
+    }
+    
+    // Fallback timeout
+    setTimeout(showRedoc, 5000);
   </script>
 </body>
 </html>
