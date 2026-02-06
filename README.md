@@ -11,7 +11,7 @@ This repository hosts interactive API documentation using Redoc.
 ## 🌐 Live Documentation
 
 Access the live documentation here:\
-👉 https://Stack-Symphony.github.io/aquaglow-api-docs/\
+👉 https://Stack-Symphony.github.io/aquaglow-api-docs/
 
 
 ## 📖 About
