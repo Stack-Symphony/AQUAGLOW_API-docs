@@ -4,7 +4,7 @@ info:
   description: API for managing car wash bookings, services, and customers
   version: 1.0.0
   contact:
-    name: Stack Symphony
+    name: Thobeka
     email: support@aquaglow.example.com
   license:
     name: MIT
@@ -28,11 +28,9 @@ tags:
     description: Customer management
 
 paths:
-  # ============ HEALTH ENDPOINT ============
   /health:
     get:
-      tags:
-        - Health
+      tags: [Health]
       summary: Health Check
       description: Check if the API is running and healthy
       responses:
@@ -43,31 +41,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
-                  status:
-                    type: string
-                    example: "healthy"
-                  timestamp:
-                    type: string
-                    format: date-time
-                    example: "2026-02-06T06:40:11.631Z"
-                  service:
-                    type: string
-                    example: "AquaGlow API"
-                  version:
-                    type: string
-                    example: "1.0.0"
-                  environment:
-                    type: string
-                    example: "development"
+                  success: {type: boolean, example: true}
+                  status: {type: string, example: "healthy"}
+                  timestamp: {type: string, format: date-time, example: "2026-02-06T06:40:11.631Z"}
+                  service: {type: string, example: "AquaGlow API"}
+                  version: {type: string, example: "1.0.0"}
+                  environment: {type: string, example: "development"}
 
-  # ============ AUTH ENDPOINTS ============
-  /auth/register:
+  /api/auth/register:
     post:
-      tags:
-        - Authentication
+      tags: [Authentication]
       summary: Register User
       description: Register a new customer or user
       requestBody:
@@ -76,35 +59,14 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - email
-                - password
-                - firstName
-                - lastName
-                - phone
+              required: [email, password, firstName, lastName, phone]
               properties:
-                email:
-                  type: string
-                  format: email
-                  example: "thobeka.new@example.com"
-                password:
-                  type: string
-                  format: password
-                  example: "Test123!@#"
-                firstName:
-                  type: string
-                  example: "Thobeka"
-                lastName:
-                  type: string
-                  example: "Test"
-                phone:
-                  type: string
-                  example: "0821234567"
-                role:
-                  type: string
-                  enum: [customer, admin, staff]
-                  default: "customer"
-                  example: "customer"
+                email: {type: string, format: email, example: "thobeka.new@example.com"}
+                password: {type: string, format: password, example: "Test123!@#"}
+                firstName: {type: string, example: "Thobeka"}
+                lastName: {type: string, example: "Test"}
+                phone: {type: string, example: "0821234567"}
+                role: {type: string, enum: [customer, admin, staff], default: "customer", example: "customer"}
       responses:
         '201':
           description: User registered successfully
@@ -113,18 +75,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: "User registered successfully"
+                  success: {type: boolean, example: true}
+                  message: {type: string, example: "User registered successfully"}
 
-  # ============ BOOKINGS ENDPOINTS ============
-  /bookings:
+  /api/bookings:
     get:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Get All Bookings
       description: Retrieve all bookings with optional filtering
       parameters:
@@ -132,17 +88,12 @@ paths:
           in: query
           description: Filter bookings by date (YYYY-MM-DD)
           required: false
-          schema:
-            type: string
-            format: date
-            example: "2026-02-15"
+          schema: {type: string, format: date, example: "2026-02-15"}
         - name: serviceType
           in: query
           description: Filter by service type
           required: false
-          schema:
-            type: string
-            example: "Aqua Glow Deluxe"
+          schema: {type: string, example: "Aqua Glow Deluxe"}
       responses:
         '200':
           description: List of bookings retrieved
@@ -151,17 +102,14 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
+                  success: {type: boolean, example: true}
                   data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Booking'
 
     post:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Create Booking
       description: Create a new car wash booking
       requestBody:
@@ -178,26 +126,19 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    $ref: '#/components/schemas/Booking'
+                  success: {type: boolean, example: true}
+                  data: {$ref: '#/components/schemas/Booking'}
 
-  /bookings/{booking_id}:
+  /api/bookings/{booking_id}:
     get:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Get Booking by ID
       description: Retrieve a specific booking by its ID
       parameters:
         - name: booking_id
           in: path
           required: true
-          schema:
-            type: string
-            format: uuid
-          example: "65c88537-44d6-47e3-b816-9a75c97877d0"
+          schema: {type: string, format: uuid, example: "65c88537-44d6-47e3-b816-9a75c97877d0"}
       responses:
         '200':
           description: Booking details retrieved
@@ -206,24 +147,18 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    $ref: '#/components/schemas/Booking'
+                  success: {type: boolean, example: true}
+                  data: {$ref: '#/components/schemas/Booking'}
 
     patch:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Update Time Slot
       description: Update the time slot of an existing booking
       parameters:
         - name: booking_id
           in: path
           required: true
-          schema:
-            type: string
-            format: uuid
+          schema: {type: string, format: uuid}
       requestBody:
         required: true
         content:
@@ -231,31 +166,22 @@ paths:
             schema:
               type: object
               properties:
-                time:
-                  type: string
-                  example: "02:00 PM"
-                date:
-                  type: string
-                  format: date
-                  example: "2026-02-20"
+                time: {type: string, example: "02:00 PM"}
+                date: {type: string, format: date, example: "2026-02-20"}
       responses:
         '200':
           description: Time slot updated successfully
 
-  /bookings/available-slots:
+  /api/bookings/available-slots:
     get:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Get Available Slots
       description: Get available time slots for a specific date
       parameters:
         - name: date
           in: query
           required: true
-          schema:
-            type: string
-            format: date
-            example: "2026-08-15"
+          schema: {type: string, format: date, example: "2026-08-15"}
       responses:
         '200':
           description: Available slots retrieved
@@ -264,34 +190,26 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
+                  success: {type: boolean, example: true}
                   data:
                     type: object
                     properties:
-                      date:
-                        type: string
-                        format: date
-                        example: "2026-08-15"
+                      date: {type: string, format: date, example: "2026-08-15"}
                       availableSlots:
                         type: array
                         items:
                           $ref: '#/components/schemas/TimeSlot'
 
-  /bookings/{booking_id}/payment:
+  /api/bookings/{booking_id}/payment:
     patch:
-      tags:
-        - Bookings
+      tags: [Bookings]
       summary: Update Payment
       description: Update payment status of a booking
       parameters:
         - name: booking_id
           in: path
           required: true
-          schema:
-            type: string
-            format: uuid
+          schema: {type: string, format: uuid}
       requestBody:
         required: true
         content:
@@ -299,14 +217,8 @@ paths:
             schema:
               type: object
               properties:
-                paymentStatus:
-                  type: string
-                  enum: [pending, paid, failed, refunded]
-                  example: "paid"
-                paymentMethod:
-                  type: string
-                  enum: [card, cash, eft, voucher]
-                  example: "card"
+                paymentStatus: {type: string, enum: [pending, paid, failed, refunded], example: "paid"}
+                paymentMethod: {type: string, enum: [card, cash, eft, voucher], example: "card"}
       responses:
         '200':
           description: Payment updated successfully
@@ -315,20 +227,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
-                  messages:
-                    type: array
-                    items:
-                      type: string
-                    example: ["Payment status updated successfully!"]
+                  success: {type: boolean, example: true}
+                  messages: {type: array, items: {type: string}, example: ["Payment status updated successfully!"]}
 
-  # ============ SERVICES ENDPOINT ============
-  /services:
+  /api/services:
     get:
-      tags:
-        - Services
+      tags: [Services]
       summary: Get All Services
       description: Retrieve all available car wash services
       responses:
@@ -339,19 +243,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
+                  success: {type: boolean, example: true}
                   data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Service'
 
-  # ============ CUSTOMERS ENDPOINT ============
-  /customers:
+  /api/customers:
     get:
-      tags:
-        - Customers
+      tags: [Customers]
       summary: Get All Customers
       description: Retrieve all customers
       responses:
@@ -362,9 +262,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
+                  success: {type: boolean, example: true}
                   data:
                     type: array
                     items:
@@ -372,225 +270,84 @@ paths:
 
 components:
   schemas:
-    # ============ BOOKING SCHEMAS ============
     Booking:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          example: "65c88537-44d6-47e3-b816-9a75c97877d0"
-        customerId:
-          type: string
-          format: uuid
-          example: "e0737431-37ea-4004-889b-4670c909e011"
-        date:
-          type: string
-          format: date
-          example: "2026-02-20"
-        time:
-          type: string
-          example: "09:00 AM"
-        serviceType:
-          type: string
-          example: "Aqua Glow Deluxe"
-        vehicleType:
-          type: string
-          enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY]
-          example: "SUV"
-        vehicleYear:
-          type: string
-          nullable: true
-          example: "2022"
-        vehicleMake:
-          type: string
-          nullable: true
-          example: "Toyota"
-        vehicleModel:
-          type: string
-          nullable: true
-          example: "Fortuner"
-        condition:
-          type: string
-          enum: [LIGHT, MODERATE, HEAVY]
-          example: "HEAVY"
+        id: {type: string, format: uuid, example: "65c88537-44d6-47e3-b816-9a75c97877d0"}
+        customerId: {type: string, format: uuid, example: "e0737431-37ea-4004-889b-4670c909e011"}
+        date: {type: string, format: date, example: "2026-02-20"}
+        time: {type: string, example: "09:00 AM"}
+        serviceType: {type: string, example: "Aqua Glow Deluxe"}
+        vehicleType: {type: string, enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY], example: "SUV"}
+        vehicleYear: {type: string, nullable: true, example: "2022"}
+        vehicleMake: {type: string, nullable: true, example: "Toyota"}
+        vehicleModel: {type: string, nullable: true, example: "Fortuner"}
+        condition: {type: string, enum: [LIGHT, MODERATE, HEAVY], example: "HEAVY"}
         extras:
           type: array
-          items:
-            type: string
-            enum: [WAX, ENGINE_CLEAN, INTERIOR, POLISH, CERAMIC_COATING]
+          items: {type: string, enum: [WAX, ENGINE_CLEAN, INTERIOR, POLISH, CERAMIC_COATING]}
           example: ["WAX", "ENGINE_CLEAN"]
-        appointmentType:
-          type: string
-          enum: [studio, mobile]
-          example: "studio"
-        totalPrice:
-          type: string
-          format: decimal
-          example: "785.00"
-        status:
-          type: string
-          enum: [pending, confirmed, completed, cancelled]
-          example: "confirmed"
-        paymentMethod:
-          type: string
-          enum: [card, cash, eft, voucher]
-          example: "card"
-        paymentStatus:
-          type: string
-          enum: [pending, paid, failed, refunded]
-          example: "paid"
+        appointmentType: {type: string, enum: [studio, mobile], example: "studio"}
+        totalPrice: {type: string, format: decimal, example: "785.00"}
+        status: {type: string, enum: [pending, confirmed, completed, cancelled], example: "confirmed"}
+        paymentMethod: {type: string, enum: [card, cash, eft, voucher], example: "card"}
+        paymentStatus: {type: string, enum: [pending, paid, failed, refunded], example: "paid"}
 
     CreateBookingRequest:
       type: object
-      required:
-        - customerId
-        - date
-        - time
-        - serviceType
-        - vehicleType
+      required: [customerId, date, time, serviceType, vehicleType]
       properties:
-        customerId:
-          type: string
-          format: uuid
-          example: "aba998e-aef8-450c-bb3e-c7dfbc21dea2"
-        date:
-          type: string
-          format: date
-          example: "2026-02-15"
-        time:
-          type: string
-          example: "11:00 AM"
-        serviceType:
-          type: string
-          example: "Aqua Glow Deluxe"
-        vehicleType:
-          type: string
-          enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY]
-          example: "SUV"
-        vehicleYear:
-          type: string
-          nullable: true
-          example: "2022"
-        vehicleMake:
-          type: string
-          nullable: true
-          example: "Toyota"
-        vehicleModel:
-          type: string
-          nullable: true
-          example: "Fortuner"
-        condition:
-          type: string
-          enum: [LIGHT, MODERATE, HEAVY]
-          example: "MODERATE"
+        customerId: {type: string, format: uuid, example: "aba998e-aef8-450c-bb3e-c7dfbc21dea2"}
+        date: {type: string, format: date, example: "2026-02-15"}
+        time: {type: string, example: "11:00 AM"}
+        serviceType: {type: string, example: "Aqua Glow Deluxe"}
+        vehicleType: {type: string, enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY], example: "SUV"}
+        vehicleYear: {type: string, nullable: true, example: "2022"}
+        vehicleMake: {type: string, nullable: true, example: "Toyota"}
+        vehicleModel: {type: string, nullable: true, example: "Fortuner"}
+        condition: {type: string, enum: [LIGHT, MODERATE, HEAVY], example: "MODERATE"}
         extras:
           type: array
-          items:
-            type: string
-            enum: [WAX, ENGINE_CLEAN, INTERIOR, POLISH, CERAMIC_COATING]
+          items: {type: string, enum: [WAX, ENGINE_CLEAN, INTERIOR, POLISH, CERAMIC_COATING]}
           example: ["INTERIOR", "WAX"]
-        appointmentType:
-          type: string
-          enum: [studio, mobile]
-          default: "studio"
-          example: "studio"
+        appointmentType: {type: string, enum: [studio, mobile], default: "studio", example: "studio"}
 
     TimeSlot:
       type: object
       properties:
-        id:
-          type: string
-          example: "09:00 AM"
-        time:
-          type: string
-          example: "11:00 AM"
-        price:
-          type: string
-          example: "03:00 PM"
-        totalSlots:
-          type: integer
-          example: 5
-        availableCount:
-          type: integer
-          example: 5
+        id: {type: string, example: "09:00 AM"}
+        time: {type: string, example: "11:00 AM"}
+        price: {type: string, example: "03:00 PM"}
+        totalSlots: {type: integer, example: 5}
+        availableCount: {type: integer, example: 5}
 
-    # ============ SERVICE SCHEMA ============
     Service:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          example: "55e6848b-e29b-41d4-a716-446655448988"
-        name:
-          type: string
-          example: "Eco Refresh"
-        description:
-          type: string
-          example: "A swift, high-pressure foam bath followed by a spot-free rinse. Perfect for regular maintenance."
-        basePrice:
-          type: string
-          format: decimal
-          example: "6.89"
-        duration:
-          type: integer
-          example: 38
+        id: {type: string, format: uuid, example: "55e6848b-e29b-41d4-a716-446655448988"}
+        name: {type: string, example: "Eco Refresh"}
+        description: {type: string, example: "A swift, high-pressure foam bath followed by a spot-free rinse. Perfect for regular maintenance."}
+        basePrice: {type: string, format: decimal, example: "6.89"}
+        duration: {type: integer, example: 38}
         vehicleTypes:
           type: array
-          items:
-            type: string
-            enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY]
+          items: {type: string, enum: [SEDAN, COUPE, HATCHBACK, SUV, TRUCK, LUXURY]}
           example: ["SEDAN", "COUPE", "HATCHBACK", "SUV", "TRUCK", "LUXURY"]
-        category:
-          type: string
-          example: "basic"
+        category: {type: string, example: "basic"}
         features:
           type: array
-          items:
-            type: string
+          items: {type: string}
           example: ["Snow Foam Treatment", "Wheel & Rim Scrub"]
 
-    # ============ CUSTOMER SCHEMA ============
     Customer:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          example: "558e8488-e29b-41d4-a716-44665446883"
-        name:
-          type: string
-          example: "John Doe"
-        email:
-          type: string
-          format: email
-          example: "john@example.com"
-        phone:
-          type: string
-          example: "+27112345678"
-        address:
-          type: string
-          nullable: true
-          example: null
-        loyaltyPoints:
-          type: integer
-          example: 58
-        totalSpent:
-          type: string
-          format: decimal
-          example: "1258.88"
-        createdAt:
-          type: string
-          format: date-time
-          example: "2026-01-29T18:12:42.0972"
-        updatedAt:
-          type: string
-          format: date-time
-          example: "2026-01-29T18:12:42.0972"
-
-securitySchemes:
-  BearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
+        id: {type: string, format: uuid, example: "558e8488-e29b-41d4-a716-44665446883"}
+        name: {type: string, example: "John Doe"}
+        email: {type: string, format: email, example: "john@example.com"}
+        phone: {type: string, example: "+27112345678"}
+        address: {type: string, nullable: true, example: null}
+        loyaltyPoints: {type: integer, example: 58}
+        totalSpent: {type: string, format: decimal, example: "1258.88"}
+        createdAt: {type: string, format: date-time, example: "2026-01-29T18:12:42.0972"}
+        updatedAt: {type: string, format: date-time, example: "2026-01-29T18:12:42.0972"}
